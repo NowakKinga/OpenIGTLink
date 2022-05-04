@@ -52,6 +52,7 @@ int main(int argc, char* argv[])
 
   //------------------------------------------------------------
   // Allocate Transform Message Class
+std::cerr << "Przygotowywuję." << std::endl;
 
   igtl::PointMessage::Pointer pointMsg;
   pointMsg = igtl::PointMessage::New();
@@ -89,7 +90,7 @@ int main(int argc, char* argv[])
   point2->SetPosition(70.0, 80.0, 90.0);
   point2->SetRadius(75.0);
   point2->SetOwner("IMAGE_0");
-  
+  std::cerr << "Skończyłem." << std::endl;
   //---------------------------
   // Pack into the point message
   pointMsg->AddPointElement(point0);
@@ -100,7 +101,10 @@ int main(int argc, char* argv[])
   //------------------------------------------------------------
   // Send
   socket->Send(pointMsg->GetPackPointer(), pointMsg->GetPackSize());
-  
+  std::cerr << "Wysłałem." << std::endl;
+	while(1) {
+	std::cerr << "Zabawa." << std::endl;	
+	}
   
   //------------------------------------------------------------
   // Close the socket
