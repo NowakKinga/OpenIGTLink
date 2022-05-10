@@ -56,8 +56,6 @@ int main(int argc, char* argv[])
 
   //------------------------------------------------------------
   // Allocate Transform Message Class
-std::cerr << "Przygotowywuję." << std::endl;
-
   igtl::PointMessage::Pointer pointMsg;
   pointMsg = igtl::PointMessage::New();
   pointMsg->SetDeviceName("PointSender");
@@ -91,10 +89,9 @@ std::cerr << "Przygotowywuję." << std::endl;
   point2->SetName("POINT_2");
   point2->SetGroupName("GROUP_0");
   point2->SetRGBA(0x00, 0x00, 0xFF, 0xFF);
-  point2->SetPosition(70.0, 80.0, 90.0);
+  point2->SetPosition(-70.0, -80.0, -90.0);
   point2->SetRadius(75.0);
   point2->SetOwner("IMAGE_0");
-  std::cerr << "Skończyłem." << std::endl;
   //---------------------------
   // Pack into the point message
   pointMsg->AddPointElement(point0);
@@ -105,14 +102,11 @@ std::cerr << "Przygotowywuję." << std::endl;
   //------------------------------------------------------------
   // Send
   socket->Send(pointMsg->GetPackPointer(), pointMsg->GetPackSize());
-  std::cerr << "Wysłałem." << std::endl;
   
 	while(1) {
 		igtl::MessageHeader::Pointer headerMsg;
 		headerMsg = igtl::MessageHeader::New();
   		headerMsg->InitPack();
-		std::cerr << "Zabawa." << std::endl;
-		std::cerr << "=====================" << std::endl;
 		bool timeout(false);
 		igtlUint64 r = socket->Receive(headerMsg->GetPackPointer(), headerMsg->GetPackSize(), timeout);
         	if (r != headerMsg->GetPackSize())
@@ -125,7 +119,7 @@ std::cerr << "Przygotowywuję." << std::endl;
 #if OpenIGTLink_PROTOCOL_VERSION >= 2
 		if (strcmp(headerMsg->GetDeviceType(), "POINT") == 0)
           	{
-			std::cerr << "**************************" << std::endl;
+			std::cerr << "***********************************************" << std::endl;
           		ReceivePoint(socket, headerMsg);
           	}
 #endif //OpenIGTLink_PROTOCOL_VERSION >= 2
