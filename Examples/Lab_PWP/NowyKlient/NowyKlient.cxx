@@ -20,6 +20,10 @@
 #include "igtlClientSocket.h"
 #include "igtlMessageHeader.h"
 
+#if OpenIGTLink_PROTOCOL_VERSION >= 2
+int ReceivePoint(igtl::Socket * socket, igtl::MessageHeader * header);
+#endif //OpenIGTLink_PROTOCOL_VERSION >= 2
+
 int main(int argc, char* argv[])
 {
   //------------------------------------------------------------
@@ -118,7 +122,13 @@ std::cerr << "Przygotowywuję." << std::endl;
 
         	// Deserialize the header
         	headerMsg->Unpack();
-		ReceivePoint(socket, headerMsg);
+#if OpenIGTLink_PROTOCOL_VERSION >= 2
+		if (strcmp(headerMsg->GetDeviceType(), "POINT") == 0)
+          	{
+			std::cerr << "**************************" << std::endl;
+          		ReceivePoint(socket, headerMsg);
+          	}
+#endif //OpenIGTLink_PROTOCOL_VERSION >= 2
 	}
   
   //------------------------------------------------------------
@@ -127,6 +137,7 @@ std::cerr << "Przygotowywuję." << std::endl;
 
 }
 
+#if OpenIGTLink_PROTOCOL_VERSION >= 2
 int ReceivePoint(igtl::Socket * socket, igtl::MessageHeader * header)
 {
 
@@ -173,3 +184,4 @@ int ReceivePoint(igtl::Socket * socket, igtl::MessageHeader * header)
 
   return 1;
 }
+#endif //OpenIGTLink_PROTOCOL_VERSION >= 2
